@@ -14,21 +14,22 @@ from sklearn.ensemble import BaggingRegressor
 
 df = pd.read_csv("data.csv", delimiter=',')
 #define predictor and response variables
-X = df[['bedrooms', 'bathrooms', 'sqft_living','floors']].values.reshape(-1,4)
+X = df[['condition', 'sqft_living','floors','bedrooms']].values.reshape(-1,4)
 Y = df['price']
 #Splitting the data into Train and Test
 model = LinearRegression()##goi mo hinh hoi quy
 xtrain, xtest, ytrain, ytest = train_test_split(X,Y,test_size=0.3, random_state=0)
 model.fit(xtrain, ytrain)##xay dung mo hinh hoi quy
 pred = model.predict(xtest)
+
 master= tk.Tk()
 master.title("Bài tập lớn")
 master.geometry("600x400",)
 tk.Label(master, text="Nhập các thông tin để dự đoán: ").grid(row=0, column=0)
-tk.Label(master, text="Số phòng ngủ").grid(row=1, column=0)
-tk.Label(master, text="Số phòng tắm").grid(row=2, column=0)
-tk.Label(master, text="Diện tích").grid(row=3, column=0)
-tk.Label(master, text="Số tầng").grid(row=4, column=0)
+tk.Label(master, text="Điều kiện ở(1-5*)").grid(row=1, column=0)
+tk.Label(master, text="Diện tích").grid(row=2, column=0)
+tk.Label(master, text="Số tầng").grid(row=3, column=0)
+tk.Label(master, text="Số phòng ngủ").grid(row=4, column=0)
 tk.Label(master, text="Kết quả dự đoán giá nhà (Tỷ) : ").grid(row=5, column=0)
 e1 = tk.Entry(master)
 e2 = tk.Entry(master)
@@ -58,6 +59,7 @@ def duDoan():
         bien3 = float(check3)
         bien4 = float(check4)
         kqDuDoan = model.predict([[bien1,bien2,bien3,bien4]])
+        print
         e5.configure(state=tk.NORMAL)
         if(check5 !=" "):
             e5.delete(0,'end')
