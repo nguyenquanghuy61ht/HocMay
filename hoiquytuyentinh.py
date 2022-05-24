@@ -6,21 +6,33 @@ from scipy import stats
 from tkinter import messagebox
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split, KFold, RepeatedKFold
-
+from sklearn import metrics
 from numpy import *
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import BaggingRegressor
 
 
 df = pd.read_csv("data.csv", delimiter=',')
-#define predictor and response variables
+
 X = df[['condition', 'sqft_living','floors','bedrooms']].values.reshape(-1,4)
+
 Y = df['price']
+
+
 #Splitting the data into Train and Test
 model = LinearRegression()##goi mo hinh hoi quy
 xtrain, xtest, ytrain, ytest = train_test_split(X,Y,test_size=0.3, random_state=0)
 model.fit(xtrain, ytrain)##xay dung mo hinh hoi quy
+#lấy kết quả dự đoán từ xtest
 pred = model.predict(xtest)
+#K=pd.DataFrame(df,columns=['sqft_living'])
+#M=pd.DataFrame(df,columns=['price'])
+#metric=metrics.explained_variance_score(ytest, pred)
+#print(metric)
+#vẽ biểu đồ giữa kết quả ban đầu vs kết quả dự đoán
+#plt.scatter( ytest,pred)
+#print(ytest)
+#plt.show()
 
 master= tk.Tk()
 master.title("Bài tập lớn")
@@ -59,14 +71,13 @@ def duDoan():
         bien3 = float(check3)
         bien4 = float(check4)
         kqDuDoan = model.predict([[bien1,bien2,bien3,bien4]])
-        print
         e5.configure(state=tk.NORMAL)
         if(check5 !=" "):
             e5.delete(0,'end')
             e5.insert(0,round(float(kqDuDoan),1))
         else:
             e5.insert(0,round(float(kqDuDoan),1))
-    #messagebox.showinfo( "Kết quả dự đoán","Dự đoán giá của căn chung cư có "+str(bien1)+" phòng ngủ,"+str(bien2)+"phong tam,co dien tich la"+str(bien3)+"m^2 , co"+str(bien4)+"tang,co ket qua du doan la: "+str(kqDuDoan)+" tỷ VND")
+   
 tk.Button(master, 
           text='Dự đoán', 
           command=duDoan).place(x=150,y=175)
@@ -77,7 +88,7 @@ tk.Button(master,
           text='Thoát', 
           command=Close).place(x=410,y=175)
 def pthoiquy():
-    a=model.coef_
+    a=model.coef_#đánh giá sự tác động của các bến độc lập tới kết quả dự đoán
     b=model.intercept_
     messagebox.showinfo( "Phương trình hồi quy","PT hồi quy có dạng: y = "+str(round(a[0],2))+" * x1 + "+str(round(a[1],2))+" * x2 + "+str(round(a[2],2))+" * x3 +"+str(round(a[3],2))+" * x4 +"+str(round(b,2)))
 tk.Button(master, 
