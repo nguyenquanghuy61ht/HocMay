@@ -2,6 +2,7 @@ from __future__ import division, print_function, unicode_literals
 import tkinter as tk
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from scipy import stats
 from tkinter import messagebox
 from sklearn.linear_model import LinearRegression
@@ -10,7 +11,7 @@ from sklearn import metrics
 from numpy import *
 from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import BaggingRegressor
-
+from sklearn.metrics import accuracy_score
 
 df = pd.read_csv("data.csv", delimiter=',')
 
@@ -25,6 +26,9 @@ xtrain, xtest, ytrain, ytest = train_test_split(X,Y,test_size=0.3, random_state=
 model.fit(xtrain, ytrain)##xay dung mo hinh hoi quy
 #lấy kết quả dự đoán từ xtest
 pred = model.predict(xtest)
+#r_sq = model.score(xtrain, ytrain)
+#print('coefficient of determination:', r_sq)
+
 #K=pd.DataFrame(df,columns=['sqft_living'])
 #M=pd.DataFrame(df,columns=['price'])
 #metric=metrics.explained_variance_score(ytest, pred)
@@ -33,6 +37,10 @@ pred = model.predict(xtest)
 #plt.scatter( ytest,pred)
 #print(ytest)
 #plt.show()
+
+print('accuracy = ',accuracy_score(ytest,pred))
+
+
 
 master= tk.Tk()
 master.title("Bài tập lớn")
