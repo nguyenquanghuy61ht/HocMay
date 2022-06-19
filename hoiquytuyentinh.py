@@ -18,7 +18,26 @@ df = pd.read_csv("data.csv", delimiter=',')
 X = df[['condition', 'sqft_living','floors','bedrooms']].values.reshape(-1,4)
 
 Y = df['price']
-
+one = np.ones((X.shape[0], 1), dtype=int)
+Xbar = np.concatenate((one, X), axis = 1)
+A = np.dot(Xbar.T, Xbar)
+b = np.dot(Xbar.T, Y)
+w = np.dot(np.linalg.pinv(A), b)
+print ('w=',w)
+w_0 = w[0]
+w_1 = w[1]
+w_2 = w[2]
+w_3 = w[3]
+w_4 = w[4]
+print("Phương trình hồi quy tuyến tính: y =%.4f"%w_1,"*x1+%.4f"%w_2,"*x2+%.4f"%w_3,"*x3+%.4f"%w_4,"*x4+%.4f"%w_0)
+# input
+x1 = int(input("Điều kiện(1-5*): "))
+x2 = float(input("Diện tích: "))
+x3 = float(input("Số tầng: "))
+x4 = int(input("Số phòng ngủ: "))
+# output
+du_doan = w_1*x1 +w_2*x2 +w_3*x3 +w_4*x4 + w_0
+print(  u'Dự đoán gia nhà : %.4f' %(du_doan))
 
 #Splitting the data into Train and Test
 model = LinearRegression()##goi mo hinh hoi quy
@@ -123,3 +142,9 @@ tk.Button(master,
           command=reset).place(x=340,y=175)   
 
 master.mainloop()
+
+
+
+
+
+
